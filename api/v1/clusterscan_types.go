@@ -22,35 +22,25 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // ClusterScanSpec defines the desired state of ClusterScan
 type ClusterScanSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	// Specify the schedule for recurring jobs (cron syntax). Empty for one-off jobs.
 	Schedule string `json:"schedule,omitempty"`
 	// JobTemplate specifies the job to run for the scan
 	JobTemplate batchv1.JobSpec `json:"jobTemplate"`
 }
 
-// ClusterScanStatus defines the observed state of ClusterScan
 type ClusterScanStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	LastScheduleTime *metav1.Time             `json:"lastScheduleTime,omitempty"`
-	LastRunTime      *metav1.Time             `json:"lastRunTime,omitempty"`
 	Active           []corev1.ObjectReference `json:"active,omitempty"`
 	Conditions       []metav1.Condition       `json:"conditions,omitempty"`
+	UnifiedStatus    string                   `json:"unifiedStatus,omitempty"`
+	Message          string                   `json:"message,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// ClusterScan is the Schema for the clusterscans API
 type ClusterScan struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -61,7 +51,6 @@ type ClusterScan struct {
 
 //+kubebuilder:object:root=true
 
-// ClusterScanList contains a list of ClusterScan
 type ClusterScanList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`

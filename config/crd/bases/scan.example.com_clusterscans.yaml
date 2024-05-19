@@ -3536,11 +3536,12 @@ spec:
                   - type
                   type: object
                 type: array
-              lastRunTime:
-                format: date-time
-                type: string
               lastScheduleTime:
                 format: date-time
+                type: string
+              message:
+                type: string
+              unifiedStatus:
                 type: string
             type: object
         type: object

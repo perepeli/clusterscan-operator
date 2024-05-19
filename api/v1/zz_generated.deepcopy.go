@@ -108,10 +108,6 @@ func (in *ClusterScanStatus) DeepCopyInto(out *ClusterScanStatus) {
 		in, out := &in.LastScheduleTime, &out.LastScheduleTime
 		*out = (*in).DeepCopy()
 	}
-	if in.LastRunTime != nil {
-		in, out := &in.LastRunTime, &out.LastRunTime
-		*out = (*in).DeepCopy()
-	}
 	if in.Active != nil {
 		in, out := &in.Active, &out.Active
 		*out = make([]corev1.ObjectReference, len(*in))
