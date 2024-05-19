@@ -7,4 +7,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: clusterscan-operator
 repo: github.com/perepeli/clusterscan-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: example.com
+  group: scan
+  kind: ClusterScan
+  path: github.com/perepeli/clusterscan-operator/api/v1
+  version: v1
 version: "3"
