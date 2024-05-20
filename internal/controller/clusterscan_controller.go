@@ -18,7 +18,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/go-logr/logr"
@@ -55,7 +54,7 @@ func (r *ClusterScanReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 			return ctrl.Result{}, nil
 		}
 		// Error reading the object - log and requeue the request
-		log.Error(err, "unable to fetch ClusterScan")
+		log.Error(err, "unable to fetch ClusterScan this time, requeue the request")
 		return ctrl.Result{}, err
 	}
 
@@ -173,14 +172,8 @@ func (r *ClusterScanReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, err
 	}
 
+	// Reconciliation successfully completed!
 	return ctrl.Result{}, nil
-}
-
-func getCronJobMessage(cronJob *batchv1.CronJob) string {
-	if len(cronJob.Status.Active) > 0 {
-		return fmt.Sprintf("CronJob is active with %d active jobs", len(cronJob.Status.Active))
-	}
-	return "CronJob is inactive"
 }
 
 func (r *ClusterScanReconciler) SetupWithManager(mgr ctrl.Manager) error {
