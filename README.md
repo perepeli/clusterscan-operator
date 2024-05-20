@@ -1,8 +1,50 @@
-# clusterscan-operator
-// TODO(user): Add simple overview of use/purpose
+# ClusterScan Operator
 
+## Overview
+
+The ClusterScan Operator is a custom Kubernetes controller built using Kubebuilder, this operator introduces a `ClusterScan` custom resource that encapsulates Jobs and CronJobs, ensuring controlled execution and descriptive status reporting. The operator reconciles `ClusterScan` resources by creating and managing the lifecycle of these encapsulated workloads, and it reflects their statuses within the `ClusterScan` resource.
+### Example `ClusterScan` CRD Definition
+
+Here is the example CRD definition that includes the `ClusterScanSpec` and `ClusterScanStatus`:
+
+```go
+type ClusterScanSpec struct {
+    Schedule    string          `json:"schedule,omitempty"`
+    JobTemplate batchv1.JobSpec `json:"jobTemplate"`
+}
+
+type ClusterScanStatus struct {
+    LastScheduleTime *metav1.Time             `json:"lastScheduleTime,omitempty"`
+    Active           []corev1.ObjectReference `json:"active,omitempty"`
+    Conditions       []metav1.Condition       `json:"conditions,omitempty"`
+    UnifiedStatus    string                   `json:"unifiedStatus,omitempty"`
+    Message          string                   `json:"message,omitempty"`
+}
+```
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+
+The ClusterScan Operator was created to address specific requirements: to implement a Kubernetes controller that manages `ClusterScan` resources, which act as interfaces for arbitrary Jobs and CronJobs. The operator supports both one-off and recurring executions, leveraging Kubernetes Jobs and CronJobs based on the provided schedule. Key features include encapsulation of Jobs and CronJobs, enhanced security through enforced policies, and detailed status updates that provide visibility into the execution states of the encapsulated workloads. By using ClusterScan, administrators benefit from improved security measures, such as running jobs with restricted privileges and limiting network access, which are not easily achieved with plain Jobs or CronJobs. 
+
+(Work is still in progress on security research part...)
+
+
+
+### Status Mapping Table
+
+| Kubernetes Resource | Resource State               | ClusterScan `UnifiedStatus` | ClusterScan `Message`                        |
+|---------------------|------------------------------|-----------------------------|----------------------------------------------|
+| **Job**             | Active (running)             | Running                     | Job is currently running.                    |
+|                     | Succeeded                    | Succeeded                   | Job has completed successfully.              |
+|                     | Failed                       | Failed                      | Job has failed.                              |
+|                     | Pending                      | Pending                     | Job is pending.                              |
+| **CronJob**         | Active (job running)         | Running                     | CronJob has active jobs currently running.   |
+|                     | Suspended                    | Suspended                   | CronJob is suspended.                        |
+|                     | Scheduled (next run pending) | Scheduled                   | CronJob is scheduled and awaiting next run.  |
+|                     | Inactive (no active job)     | Inactive                    | CronJob is inactive.                         |
+
+## Reconcile loop diagram
+![Reconcile Diagram](reconcile_diagram.jpg)
+
 
 ## Getting Started
 
