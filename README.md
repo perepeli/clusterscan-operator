@@ -43,7 +43,7 @@ The ClusterScan Operator was created to address specific requirements: to implem
 |                     | Inactive (no active job)     | Inactive                    | CronJob is inactive.                         |
 
 ## Reconcile loop diagram
-![Reconcile Diagram](reconcile_diagram.jpg)
+![Reconcile Diagram](reconcile_diagram.jpeg)
 
 
 ## Getting Started
